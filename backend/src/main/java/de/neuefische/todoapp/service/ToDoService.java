@@ -17,4 +17,8 @@ public class ToDoService {
     public Collection<ToDo> getAllToDo(){
         return toDoDb.getAllToDo();
     }
+
+    public ToDo addToDo(String description) {
+        return toDoDb.addToDb(description);
+    }
 }

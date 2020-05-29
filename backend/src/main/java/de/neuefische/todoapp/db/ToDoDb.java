@@ -33,4 +33,10 @@ public class ToDoDb {
     public void add(ToDo task) {
         toDos.add(task);
     }
+
+    public ToDo addToDb(String description) {
+        ToDo toDo = new ToDo("1",description,EnumStatus.OPEN);
+        toDos.add(toDo);
+        return toDo;
+    }
 }

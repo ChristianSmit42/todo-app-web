@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -59,5 +61,20 @@ class ToDoControllerTest {
         // THEN
         assertEquals(HttpStatus.OK,statusCode);
         assertEquals(0,toDos.length);
+    }
+
+    @Test
+    @DisplayName("Add toDo should return ToDo Object with entered String as description")
+    void AddToDoReturnsToDo(){
+        // GIVEN
+        String description = "description1";
+        toDoDb.addToDb(description);
+        HttpEntity<String> requestEntity = new HttpEntity<>(description);
+        // WHEN
+        ResponseEntity<ToDo> response = restTemplate.exchange("http://localhost:"+port+"/api/todo", HttpMethod.PUT, requestEntity,ToDo.class);
+        // THEN
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(new ToDo("1",description,EnumStatus.OPEN), response.getBody());
+        assertTrue(toDoDb.getAllToDo().contains(new ToDo("1",description,EnumStatus.OPEN)));
     }
 }
